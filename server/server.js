@@ -1,15 +1,17 @@
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
 const app = express();
+const authRoute = require('./router/auth-router')
+const connectDb = require("./utils/db");
 
-app.get("/",(req,res)=>{
-    res.status(200).send("Welcome to our website");
-});
-app.get("/register",(req,res)=>{
-    res.status(200).send("Register your data here!");
-});
+app.use(express.json());
 
+// Mounting the Routers
+app.use('/api/auth', authRoute);
 
-const PORT = 5001;
-app.listen(PORT,()=>{
+const PORT = process.env.PORT || 5010;
+connectDb().then(() => {
+  app.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`);
-})
+  });
+});
