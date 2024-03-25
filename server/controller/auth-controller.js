@@ -69,23 +69,86 @@ const employeeDelete = async (req, res) => {
 const employeeInsert = async (req, res) => {
   try {
     const empData = req.body;
-    const data = [empData.name, empData.salary];
+    // const data = [empData.name, empData.salary];
     const connection = await connectDb();
     connection.query(
-      "INSERT INTO employee (name,salary) values(?)",
-      [data],
+      "INSERT INTO employee (name,salary) values(?,?)",
+      [empData.name, empData.salary],
       (err, rows) => {
+        connection.release();
         if (err) {
           res.status(500).json({ error: "Internal server error" });
-        }else{
-            res.status(200).json({Inserted:rows});
+        } else {
+          console.log("New emplyee inserted", rows);
+          res.status(200).json({ Inserted: rows });
         }
       }
     );
-    connection.release();
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-module.exports = { home, employeeInfo, employeeId, employeeDelete,employeeInsert };
+const employeeUpdate = async (req, res) => {
+  try {
+    const data = req.body;
+    const id = data.id;
+    const connection = await connectDb();
+    connection.query(
+      "UPDATE employee SET ? where id=?",
+      [data, id],
+      (err, rows) => {
+        connection.release();
+        if (err) {
+          res.status(500).json({ error: "Internal server error" });
+        } else {
+          res.status(200).json({ message: `${id} id updated` });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const putMethod = async (req, res) => {
+  try {
+    const data = req.body;
+    const connection = await connectDb();
+    connection.query(
+      "UPDATE employee set ? where id = ?",
+      [data, data.id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          if (result.affectedRows == 0) {
+            connection.query(
+              "INSERT into employee (name,salary) values(?,?)",
+              [data.name, data.salary],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.status(200).json({ message: `New data inserted` });
+                }
+              }
+            );
+          }
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports = {
+  home,
+  employeeInfo,
+  employeeId,
+  employeeDelete,
+  employeeInsert,
+  employeeUpdate,
+  putMethod
+};
