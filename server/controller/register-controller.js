@@ -16,4 +16,23 @@ const register = async(req,res)=>{
     }
 }
 
-module.exports = register;
+const login =async(req,res)=>{
+    try {
+        const {email,password}=req.body;
+       const regconn = await connectDb();
+       regconn.query("SELECT * FROM users WHERE email = ? AND password = ?",[email,password],(err,log)=>{
+        if(err){
+            res.status(500).json({error:"Internal server error"});
+        }
+        if(!log){
+            res.status(401).json("Invalid Credentials");
+        }else{
+            res.status(200).json({Message:"Login successful"});
+        }
+       })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = {register,login};

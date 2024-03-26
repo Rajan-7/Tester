@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Axios from "axios"
+import Axios from "axios";
 
 export const Register = () => {
   const [users, setusers] = useState({
@@ -17,20 +17,21 @@ export const Register = () => {
     });
   };
 
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(users);
     try {
-      const result = Axios.post("http://localhost:5009/api/form/register",{
-        username:users.username,
-        email:users.email,
-        password:users.password
-      })
+      const result = Axios.post("http://localhost:5009/api/form/register", {
+        username: users.username,
+        email: users.email,
+        password: users.password,
+      });
+      setusers({ username: "", email: "", password: ""});
       console.log(result);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <>
       <section className="login-section">
