@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.container-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1.8rem;
+}
+
+
+
+nav ul {
+  display: flex;
+  gap: 4rem;
+}
+
+li {
+  list-style: none;
+}
+
+.container {
+  padding: 7rem 10rem;
+}
+
+label{
+    font-size: 1.8rem;
+}
+
+.main-heading{
+    font-size: 3.2rem;
+}
+
+.login-section{
+    margin-top: -10rem;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -143,6 +143,30 @@ const putMethod = async (req, res) => {
   }
 };
 
+// Registration of Employee/Users
+const register = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const regconn = await connectDb();
+    regconn.query(
+      "INSERT INTO users(username,email,password) values(?,?,?)",
+      [username, email, password],
+      (err, results) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ error: "Internal server error" });
+        } else {
+          res.status(200).json({register:results})
+          console.log(results);
+        }
+      }
+    );
+    regconn.release();
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   home,
   employeeInfo,
@@ -150,5 +174,6 @@ module.exports = {
   employeeDelete,
   employeeInsert,
   employeeUpdate,
-  putMethod
+  putMethod,
+  register,
 };
