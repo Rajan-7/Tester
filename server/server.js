@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const authRoute = require('./router/auth-router');
 const authCred = require('./router/register-router');
+const authService = require('./router/service-router');
 const connectDb = require("./utils/db");
 
 app.use(cors());
@@ -13,6 +14,7 @@ app.use(express.json());
 // Mounting the Routers
 app.use('/api/auth', authRoute);
 app.use('/api/form',authCred);
+app.use('/api/data',authService)
 
 const PORT = process.env.PORT || 5010;
 connectDb().then(() => {
