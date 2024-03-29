@@ -14,7 +14,7 @@ export const AdminLayout = () => {
                 <NavLink to="/admin/services">News</NavLink>
               </li>
               <li>
-                <NavLink to="/admin/services">Blogs</NavLink>
+                <NavLink to="/admin/blogs">Blogs</NavLink>
               </li>
             </ul>
           </nav>

@@ -23,7 +23,7 @@ const services = async (req, res) => {
 const getServices = async (req, res) => {
   try {
     const servconn = await connectDb();
-    servconn.query("SELECT * FROM services", (err, response) => {
+    servconn.query("SELECT * FROM services order by id desc", (err, response) => {
       if(err){
         res.status(500).json({error:"Internal server error"});
       }else{

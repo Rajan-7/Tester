@@ -33,7 +33,7 @@ export const AdminService = () => {
         name: "",
         description: "",
       });
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +44,7 @@ export const AdminService = () => {
       <section className="login-section">
         <div className="container">
           <h1 className="main-heading">Service Form</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} type>
             <div>
               <label htmlFor="name">Name</label>
               <input
