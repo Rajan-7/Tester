@@ -1,5 +1,6 @@
 
 const imageUpload = (req,res)=>{
+    console.log("Image",req.file);
     if(req.file.filename){
         res.status(200).json({
             message:"Image upload successfully!",

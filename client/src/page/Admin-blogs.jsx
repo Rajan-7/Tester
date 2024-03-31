@@ -1,16 +1,21 @@
 import { useState } from "react";
 
 import axios from "axios";
-import path from "path";
+// import path from "path";
+
+const UIR = "http://localhost:5009/api/image/images";
 
 const URL = "http://localhost:5009/api/blog/blogs";
 
 export const AdminBlogs = () => {
   const [blogs, setBlogs] = useState({
     image: "",
-    name: path.extname(file.originalname),
+    name: "",
     description: "",
   });
+
+  const [img, setImg] = useState([]);
+  console.log(img);
 
   const handleChange = (e) => {
     let name = e.target.name;
@@ -24,39 +29,34 @@ export const AdminBlogs = () => {
     });
   };
 
-  // function getFileExtension(filename) {
-  //   const extension = filename.split(".").pop();
-  //   return extension;
-  // }
-
-  // const  getFileName = (event)=>{
-  //   const files = event.target.files;
-  //   const fileName = files[0].name;
-  //   return fileName;
-  // }
-
-  //  handleSelectedFile = event => {
-  //    this.setState({
-  //     selectedFile:event.target.files,
-  //     selectedFName:event.target.files.name
-  //    })
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formdata = new FormData();
-      formdata.append("image", blogs);
+      formdata.append("image", img);
+      console.log("++",img.name);
+      console.log("----", formdata);
+      // const imageResponse = await axios.post(UIR, formdata,{
+      //   header:{
+      //     "Content-Type":"multipart/form-data"
+      //   }
+      // });
+      const imageResponse=await axios({
+        url:UIR,
+        data:formdata,
+        method:"post",
+        headers:{
+          "Content-Type":"multipart/form-data"
+        }
+      })
+      console.log(imageResponse);
       const response = await axios.post(URL, {
-        header: {
-          "Content-Type":"multipart/form-data",
-        },
         name: blogs.name,
         description: blogs.description,
-        image: blogs.image,
+        image: imageResponse.data.url,
       });
+      console.log(imageResponse.data.url);
       // console.log(response);
-      // console.log(for);
       setBlogs({ image: "", name: "", description: "" });
     } catch (error) {
       console.log(error);
@@ -70,8 +70,8 @@ export const AdminBlogs = () => {
           <h1 className="main-heading">Blogs Form</h1>
           <form
             onSubmit={handleSubmit}
-            method="POST"
-            encType="multipart/form-data"
+            // method="POST"
+            // encType="multipart/form-data"
           >
             <div>
               <label htmlFor="image">Image</label>
@@ -81,10 +81,9 @@ export const AdminBlogs = () => {
                 id="image"
                 placeholder="Enter your image"
                 required
-                multiple
+                accept="image"
                 autoComplete="off"
-                value={blogs.image}
-                onChange={handleChange}
+                onChange={(e) => setImg(e.target.files[0])}
               />
             </div>
             <div>
