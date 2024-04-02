@@ -4,7 +4,6 @@ const blog = async(req,res)=>{
     try {
 
         // Query sections
-        
         const {name,image,description}=req.body;
         const blogconn = await connectDb();
         blogconn.query('INSERT INTO blogs(image,name,description) values(?,?,?)',[image,name,description],(err,response)=>{
@@ -21,7 +20,6 @@ const blog = async(req,res)=>{
 
 const blogGet = async(req,res)=>{
     try {
-        const {name,image,description}=req.body;
         const blogconn = await connectDb();
         blogconn.query("SELECT * FROM blogs",(err,resp)=>{
             if(err){
